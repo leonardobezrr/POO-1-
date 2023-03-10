@@ -13,10 +13,6 @@ void valores() {
   print(venda.total());
 }
 
-void tela() {
-  print("Produto 1 - ", produto);
-}
-
 class Item {
   double quantidade;
   double total() => quantidade * produto.preco;
