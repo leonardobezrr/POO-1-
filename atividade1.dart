@@ -10,6 +10,7 @@ void valores() {
   var item2 = Item(20, produto2);
   var item3 = Item(10, produto3);
   var venda = Venda("09/03/2020", [item, item2, item3]);
+  print("Valor total da venda: ");
   print(venda.total());
 }
 
@@ -24,7 +25,7 @@ class Item {
 class Venda {
   String data;
   List<Item> itens;
-  //Feito com ajuda do código de Isayan
+  //Feito com base no código de Isayan
   double total() {
     var res = itens.reduce((value, element) {
       value.produto.preco = ((value.total() + element.total()) /
