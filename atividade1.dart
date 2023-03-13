@@ -6,18 +6,30 @@ void valores() {
   var prod = Produto(preco: 2, descricao: "Capacete", validade: "2 anos");
   var prod2 = Produto(preco: 2, descricao: "Cinto", validade: "5 anos");
   var prod3 = Produto(preco: 3, descricao: "Chocolate", validade: "2025");
-  var item = Item(quantidade: 5,produto: prod);
-  var item2 = Item(quantidade: 20,produto: prod2);
-  var item3 = Item(quantidade: 10,produto: prod3);
-  var venda = Venda(data: "09/03/2020",itens: [item, item2, item3]);
+  var item = Item(quantidade: 5, produto: prod);
+  var item2 = Item(quantidade: 20, produto: prod2);
+  var item3 = Item(quantidade: 10, produto: prod3);
+  var venda = Venda(data: "09/03/2020", itens: [item, item2, item3]);
   print("Valor total da venda: ");
   print(venda.total());
 }
 
+class Produto {
+  double preco; //             /
+  String descricao; //        /   ==> ATRIBUTOS
+  String validade; //        /
+
+  Produto(
+      {required this.preco,
+      required this.descricao,
+      required this.validade}); // Construtor -> inicializar os objetos
+}
+
 class Item {
   double quantidade;
-  double total() => quantidade * produto.preco;
   Produto produto;
+
+  double total() => quantidade * produto.preco;
 
   Item({required this.quantidade, required this.produto});
 }
@@ -27,6 +39,7 @@ class Venda {
   List<Item> itens;
   //Feito com base no código de Isayan
   double total() {
+    //itens.fold(0,(sum,e)=>sum + e.total());
     var res = itens.reduce((value, element) {
       value.produto.preco = ((value.total() + element.total()) /
           (value.quantidade + element.quantidade));
@@ -39,17 +52,5 @@ class Venda {
   Venda({
     required this.data,
     required this.itens,
-    }
-  );
-}
-
-class Produto {
-  double preco;
-  String descricao;
-  String validade;
-
-  Produto(
-      {required this.preco,
-      required this.descricao,
-      required this.validade}); // Construtor -> inicializar os objetos
+  });
 }
