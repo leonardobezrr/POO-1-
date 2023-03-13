@@ -3,13 +3,13 @@ void main() {
 }
 
 void valores() {
-  var produto = Produto(2, "Capacete", "2 anos");
-  var produto2 = Produto(4, "Cinto", "5 anos");
-  var produto3 = Produto(3, "Chocolate", "2025");
-  var item = Item(5, produto);
-  var item2 = Item(20, produto2);
-  var item3 = Item(10, produto3);
-  var venda = Venda("09/03/2020", [item, item2, item3]);
+  var prod = Produto(preco: 2, descricao: "Capacete", validade: "2 anos");
+  var prod2 = Produto(preco: 2, descricao: "Cinto", validade: "5 anos");
+  var prod3 = Produto(preco: 3, descricao: "Chocolate", validade: "2025");
+  var item = Item(quantidade: 5,produto: prod);
+  var item2 = Item(quantidade: 20,produto: prod2);
+  var item3 = Item(quantidade: 10,produto: prod3);
+  var venda = Venda(data: "09/03/2020",itens: [item, item2, item3]);
   print("Valor total da venda: ");
   print(venda.total());
 }
@@ -19,7 +19,7 @@ class Item {
   double total() => quantidade * produto.preco;
   Produto produto;
 
-  Item(this.quantidade, this.produto);
+  Item({required this.quantidade, required this.produto});
 }
 
 class Venda {
@@ -36,9 +36,10 @@ class Venda {
     return res.total();
   }
 
-  Venda(
-    this.data,
-    this.itens,
+  Venda({
+    required this.data,
+    required this.itens,
+    }
   );
 }
 
@@ -47,5 +48,8 @@ class Produto {
   String descricao;
   String validade;
 
-  Produto(this.preco, this.descricao, this.validade);
+  Produto(
+      {required this.preco,
+      required this.descricao,
+      required this.validade}); // Construtor -> inicializar os objetos
 }
