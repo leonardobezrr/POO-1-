@@ -8,22 +8,27 @@ void main() {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: const <Widget>[
-            Text('\nBolo de ovos\n',
+          children: [
+            const Text('\nBolo de ovos\n',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 35,
                     color: Colors.black87)),
-            Text('Ingredientes\n',
+            const Text('Ingredientes\n',
                 style: TextStyle(
                     fontWeight: FontWeight.normal,
                     fontSize: 25,
                     color: Colors.black87)),
-            Text(
-              '° 2 xícaras de açúcar ${'\n'}° 250g de margarina ${'\n'}° 3 ovos ${'\n'}° 3 xícaras de farinha de trigo (com fermento) ${'\n'}° 1 xícara de leite${'\n'}° 1 pitada de sal',
+            const Text(
+              '° 2 xícaras de açúcar ${'\n'}° 250g de margarina ${'\n'}° 3 ovos ${'\n'}° 3 xícaras de farinha de trigo (com fermento) ${'\n'}° 1 xícara de leite${'\n'}° 1 pitada de sal ${'\n'}',
               style: TextStyle(
                 fontSize: 18,
                 backgroundColor: Colors.orange),
+            ),
+            Image.asset(
+              'C:/Users/Public/Pictures/bolo-sem-ovo.jpg',
+              height:100,
+              width:100,
             ),
           ],
         ),
