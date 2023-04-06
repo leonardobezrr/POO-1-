@@ -1,8 +1,13 @@
+
 import 'package:flutter/material.dart';
+
 
 void main() {
   MaterialApp app = MaterialApp(
-    theme: ThemeData(primarySwatch: Colors.orange),
+    theme: ThemeData(
+      primarySwatch: Colors.orange,
+      textTheme: const TextTheme(bodyMedium: TextStyle(color: Colors.black)),
+      ),
     home: Scaffold(
       appBar: AppBar(title: const Text("Receita de bolo")),
       body: Center(
@@ -21,14 +26,13 @@ void main() {
                     color: Colors.black87)),
             const Text(
               '° 2 xícaras de açúcar ${'\n'}° 250g de margarina ${'\n'}° 3 ovos ${'\n'}° 3 xícaras de farinha de trigo (com fermento) ${'\n'}° 1 xícara de leite${'\n'}° 1 pitada de sal ${'\n'}',
-              style: TextStyle(
-                fontSize: 18,
-                backgroundColor: Colors.orange),
+              style: TextStyle(fontSize: 18, backgroundColor: Colors.orange),
             ),
-            Image.asset(
-              'C:/Users/Public/Pictures/bolo-sem-ovo.jpg',
-              height:100,
-              width:100,
+            
+            Image.network(
+              'https://www.designi.com.br/images/preview/10097378.jpg',
+              height: 100,
+              width: 100,
             ),
           ],
         ),
