@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(title: const Text(_title)),
 
-        body: const Tabela(),
+        body:const Tabela(),
       ),
     );
   }
@@ -27,56 +27,73 @@ class Tabela extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DataTable(
-      columns: const <DataColumn>[
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              'Nome',
-              style: TextStyle(fontStyle: FontStyle.normal, fontSize: 20),
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: DataTable(
+        columns: const <DataColumn>[
+          DataColumn(
+            label: Expanded(
+              child: Text(
+                'Nome',
+                style: TextStyle(fontStyle: FontStyle.normal, fontSize: 20),
+              ),
             ),
           ),
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              'Estilo',
-              style: TextStyle(fontStyle: FontStyle.normal, fontSize: 20),
+          DataColumn(
+            label: Expanded(
+              child: Text(
+                'Estilo',
+                style: TextStyle(fontStyle: FontStyle.normal, fontSize: 20),
+              ),
             ),
           ),
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              'IBU',
-              style: TextStyle(fontStyle: FontStyle.normal, fontSize: 20),
+          DataColumn(
+            label: Expanded(
+              child: Text(
+                'IBU',
+                style: TextStyle(fontStyle: FontStyle.normal, fontSize: 20),
+              ),
             ),
           ),
-        ),
-      ],
-      rows: const <DataRow>[
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('La Fin Du Monde')),
-            DataCell(Text('Bock ')),
-            DataCell(Text('65')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('Sapporo Premium')),
-            DataCell(Text('Sour Ale')),
-            DataCell(Text('54')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('Duvel')),
-            DataCell(Text('Pilsner')),
-            DataCell(Text('82')),
-          ],
-        ),
-      ],
+        ],
+        rows: const <DataRow>[
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text('La Fin Du Monde')),
+              DataCell(Text('Bock ')),
+              DataCell(Text('65')),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text('Sapporo Premium')),
+              DataCell(Text('Sour Ale')),
+              DataCell(Text('54')),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text('Duvel')),
+              DataCell(Text('Pilsner')),
+              DataCell(Text('82')),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text('Skol')),
+              DataCell(Text('Pilsen')),
+              DataCell(Text('11')),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text('Brahma')),
+              DataCell(Text('Standard American Lager')),
+              DataCell(Text('10')),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
