@@ -30,10 +30,15 @@ void main() {
               style: TextStyle(fontSize: 18, backgroundColor: Colors.orange),
             ),
             
-            Image.network(
-              'https://www.designi.com.br/images/preview/10097378.jpg',
-              height: 100,
+            FadeInImage.assetNetwork(
+              placeholder: "images/galego.jpeg",
+              image:
+                  "https://receitatodahora.com.br/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2021/11/bolo-de-trigo-fofinho-scaled.jpg.webp",
+              fadeInDuration: const Duration(milliseconds: 500),
+              fadeInCurve: Curves.easeIn,
               width: 100,
+              height: 100,
+              fit: BoxFit.cover,
             ),
           ],
         ),
