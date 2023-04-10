@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class NewNavBar extends StatelessWidget {
   NewNavBar();
-
+  
   void tocaramNoBotao(int index) {
     print("Tocaram no botão $index");
   }
@@ -11,12 +11,12 @@ class NewNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(onTap: tocaramNoBotao, items: const [
       BottomNavigationBarItem(
-        label: "Cafés",
+        label: "Whiskey's",
         icon: Icon(Icons.coffee_outlined),
       ),
       BottomNavigationBarItem(
-          label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
-      BottomNavigationBarItem(label: "Nações", icon: Icon(Icons.flag_outlined))
+          label: "Vinhos", icon: Icon(Icons.local_drink_outlined)),
+      BottomNavigationBarItem(label: "Cachaças", icon: Icon(Icons.flag_outlined))
     ]);
   }
 }
