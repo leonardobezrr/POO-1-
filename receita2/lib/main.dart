@@ -41,16 +41,16 @@ class NewBody extends StatelessWidget {
 }
 
 class NewApp extends StatelessWidget {
-  NewApp();
+  const NewApp();
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(title: Text("Dicas att 3"));
+    return AppBar(title: const Text("Dicas atividade 3"));
   }
 }
 
 class MyApp extends StatelessWidget {
-  MyApp();
+  const MyApp();
 
   @override
   Widget build(BuildContext context){
@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
 }
 
 void main() {
-  MyApp app = MyApp();
+  MyApp app = const MyApp();
 
   runApp(app);
 }
