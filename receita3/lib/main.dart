@@ -15,14 +15,21 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(
             title: const Text("Dicas"),
           ),
-          body: DataBodyWidget(),
+          body: DataBodyWidget(
+            objects: const [
+              "La Fin du Monde - Bock - 56 ibu",
+              "Sapporo Premiume - Sour Ale - 54 ibu",
+              "Duvel - Pilsner - 82 ibu"
+            ],
+          ),
           bottomNavigationBar: NewNavBar(),
         ));
   }
 }
 
 class NewNavBar extends StatelessWidget {
-  NewNavBar();
+  List<String> objects;
+  NewNavBar({this.objects = const []});
 
   void botaoFoiTocado(int index) {
     print("Tocaram no botão $index");
@@ -46,14 +53,18 @@ class DataBodyWidget extends StatelessWidget {
   List<String> objects;
   DataBodyWidget({this.objects = const []});
 
+  Expanded processarUmElemento(String obj) {
+    return Expanded(child: Center(child: Text(obj)));
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<Expanded> allTheLines = [];
-    for (var obj in objects) {
-      allTheLines.add(Expanded(
-        child: Center(child: Text(obj)),
-      ));
-    }
+    List<Expanded> allTheLines = objects
+        .map((obj) => Expanded(
+              child: Center(child: Text(obj)),
+            ))
+        .toList();
+
     return Column(children: allTheLines);
   }
 }
