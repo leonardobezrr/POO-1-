@@ -5,6 +5,32 @@ void main() {
   runApp(app);
 }
 
+class MyAppBar extends AppBar {
+  MyAppBar({Key? key, required String title})
+      : super(
+          key: key,
+          title: Text(title),
+          actions: [
+            PopupMenuButton<Color>(
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  child: Text("Azul"),
+                  value: Colors.blue,
+                ),
+                const PopupMenuItem(
+                  child: Text("Preto"),
+                  value: Colors.black,
+                ),
+                const PopupMenuItem(
+                  child: Text("Roxo"),
+                  value: Colors.purple,
+                ),
+              ],
+            )
+          ],
+        );
+}
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -12,26 +38,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(primarySwatch: Colors.blue),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          appBar: AppBar(
-            title: const Text("Dicas"),
-            actions: [
-              PopupMenuButton<Color>(
-                  itemBuilder: (context) => [
-                        const PopupMenuItem(
-                          child: Text("Azul"),
-                          value: Colors.blue,
-                        ),
-                        const PopupMenuItem(
-                          child: Text("Preto"),
-                          value: Colors.black,
-                        ),
-                        const PopupMenuItem(
-                          child: Text("Roxo"),
-                          value: Colors.purple,
-                        ),
-                      ],)
-            ],
-          ),
+          appBar: MyAppBar(title: "Dicas",),
           body: DataBodyWidget(
             objects: const [
               "La Fin du Monde - Bock - 56 ibu",
@@ -40,7 +47,7 @@ class MyApp extends StatelessWidget {
             ],
           ),
           bottomNavigationBar: NewNavBar(
-            icons: [
+            icons: const [
               Icons.checklist_outlined,
               Icons.menu,
               Icons.local_drink_outlined,
