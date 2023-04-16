@@ -14,6 +14,23 @@ class MyApp extends StatelessWidget {
         home: Scaffold(
           appBar: AppBar(
             title: const Text("Dicas"),
+            actions: [
+              PopupMenuButton<Color>(
+                  itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          child: Text("Azul"),
+                          value: Colors.blue,
+                        ),
+                        const PopupMenuItem(
+                          child: Text("Preto"),
+                          value: Colors.black,
+                        ),
+                        const PopupMenuItem(
+                          child: Text("Roxo"),
+                          value: Colors.purple,
+                        ),
+                      ],)
+            ],
           ),
           body: DataBodyWidget(
             objects: const [
@@ -22,30 +39,44 @@ class MyApp extends StatelessWidget {
               "Duvel - Pilsner - 82 ibu"
             ],
           ),
-          bottomNavigationBar: NewNavBar(),
+          bottomNavigationBar: NewNavBar(
+            icons: [
+              Icons.checklist_outlined,
+              Icons.menu,
+              Icons.local_drink_outlined,
+              Icons.flag_outlined
+            ],
+            onTabSelected: (index) {
+              print("Tocaram no botão $index");
+            },
+          ),
         ));
   }
 }
 
 class NewNavBar extends StatelessWidget {
-  List<String> objects;
-  NewNavBar({this.objects = const []});
+  final List<IconData> icons;
+  final Function(int) onTabSelected;
 
-  void botaoFoiTocado(int index) {
-    print("Tocaram no botão $index");
+  NewNavBar({required this.icons, required this.onTabSelected});
+
+  List<BottomNavigationBarItem> _buildItems() {
+    return icons
+        .map((icon) => BottomNavigationBarItem(
+              icon: Icon(icon),
+              label: '',
+            ))
+        .toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(onTap: botaoFoiTocado, items: const [
-      BottomNavigationBarItem(
-        label: "Cafés",
-        icon: Icon(Icons.coffee_outlined),
-      ),
-      BottomNavigationBarItem(
-          label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
-      BottomNavigationBarItem(label: "Nações", icon: Icon(Icons.flag_outlined))
-    ]);
+    return BottomNavigationBar(
+      onTap: onTabSelected,
+      items: _buildItems(),
+      selectedItemColor: Colors.blue,
+      unselectedItemColor: Colors.black,
+    );
   }
 }
 
