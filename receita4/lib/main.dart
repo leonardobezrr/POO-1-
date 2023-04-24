@@ -61,7 +61,7 @@ class DataBodyWidget extends StatelessWidget {
         columns: columnNames.map(
           (name) => DataColumn(
             label: Expanded(
-              child: Text(name,style: TextStyle(fontStyle: FontStyle.italic),)
+              child: Text(name,style: const TextStyle(fontStyle: FontStyle.italic),)
             )
           )
         ).toList(),
