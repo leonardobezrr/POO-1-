@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           ListView(
             shrinkWrap: true,
             children: [
-              DataBodyWidget(objects: dataObjects),
+              MyTileWidget(objects: dataObjects),
             ],
           ),
           bottomNavigationBar: NewNavBar(),
@@ -67,33 +67,6 @@ class NewNavBar extends StatelessWidget {
   }
 }
 
-class DataBodyWidget extends StatelessWidget {
-  List objects;
-  DataBodyWidget({this.objects = const []});
-
-  @override
-  Widget build(BuildContext context) {
-    var columnNames = ["Nome", "Estilo", "IBU"],
-        propertyNames = ["name", "style", "ibu"];
-
-    return DataTable(
-            columns: columnNames
-                .map((name) => DataColumn(
-                        label: Expanded(
-                            child: Text(
-                      name,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
-                    ))))
-                .toList(),
-            rows: objects
-                .map((obj) => DataRow(
-                    cells: propertyNames
-                        .map((propName) => DataCell(Text(obj[propName])))
-                        .toList()))
-                .toList());
-  }
-}
-
 
 class MyTileWidget extends StatelessWidget {
   final List<Map<String, String>> objects;
@@ -103,6 +76,7 @@ class MyTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: objects.length,
       itemBuilder: (BuildContext context, int index) {
         final obj = objects[index];
