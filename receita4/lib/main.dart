@@ -95,29 +95,25 @@ class DataBodyWidget extends StatelessWidget {
 }
 
 
-class MytileWidget extends StatelessWidget {
-  List objects;
-  MytileWidget({this.objects = const []});
+class MyTileWidget extends StatelessWidget {
+  final List<Map<String, String>> objects;
+  
+  const MyTileWidget({required this.objects});
 
   @override
   Widget build(BuildContext context) {
-    var columnNames = ["Nome", "Estilo", "IBU"],
-        propertyNames = ["name", "style", "ibu"];
+    return ListView.builder(
+      itemCount: objects.length,
+      itemBuilder: (BuildContext context, int index) {
+        final obj = objects[index];
 
-    return DataTable(
-            columns: columnNames
-                .map((name) => DataColumn(
-                        label: Expanded(
-                            child: Text(
-                      name,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
-                    ))))
-                .toList(),
-            rows: objects
-                .map((obj) => DataRow(
-                    cells: propertyNames
-                        .map((propName) => DataCell(Text(obj[propName])))
-                        .toList()))
-                .toList());
+        return Card(
+          child: ListTile(
+            title: Text(obj['name']!),
+            subtitle: Text('${obj['style']} - ${obj['ibu']} IBU'),
+          ),
+        );
+      },
+    );
   }
 }
