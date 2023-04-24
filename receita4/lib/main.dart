@@ -8,7 +8,20 @@ void main() {
 var dataObjects = [
   {"name": "La Fin Da Mul", "style": "Bock", "ibu": "65"},
   {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-  {"name": "Duvel", "style": "Pilsner", "ibu": "82"},
+  {"name": "Miro Premium", "style": "Pilsner", "ibu": "21"},
+  {"name": "Dani's Beer", "style": "Malte", "ibu": "44"},
+  {"name": "Heiniken", "style": "Pilsner", "ibu": "33"},
+  {"name": "Amstel", "style": "Alenou", "ibu": "22"},
+  {"name": "Skol", "style": "Pilsner", "ibu": "12"},
+  {"name": "Devassa", "style": "Imburat", "ibu": "17"},
+  {"name": "Puro Malte", "style": "Fogassa", "ibu": "88"},
+  {"name": "Lindi's Beer", "style": "Pilsner", "ibu": "55"},
+  {"name": "Laravel Productions", "style": "Malte", "ibu": "32"},
+  {"name": "Dona's Beer", "style": "Puro Gorgon", "ibu": "47"},
+  {"name": "Gincard", "style": "Justa", "ibu": "40"},
+  {"name": "Yorit Premium", "style": "Ien", "ibu": "15"},
+  {"name": "Astar", "style": "Yellow", "ibu": "19"},
+  {"name": "Duplo malte", "style": "Pilsner", "ibu": "77"},
 ];
 
 class MyApp extends StatelessWidget {
@@ -57,21 +70,22 @@ class DataBodyWidget extends StatelessWidget {
     var columnNames = ["Nome", "Estilo", "IBU"],
         propertyNames = ["name", "style", "ibu"];
 
-    return DataTable(
-        columns: columnNames.map(
-          (name) => DataColumn(
-            label: Expanded(
-              child: Text(name,style: const TextStyle(fontStyle: FontStyle.italic),)
-            )
-          )
-        ).toList(),
-        rows: objects.map(
-          (obj) => DataRow(
-            cells: propertyNames.map(
-              (propName) => DataCell(Text(obj[propName]))
-              ).toList()
-          )
-        ).toList());
-    
+    return SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: DataTable(
+            columns: columnNames
+                .map((name) => DataColumn(
+                        label: Expanded(
+                            child: Text(
+                      name,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ))))
+                .toList(),
+            rows: objects
+                .map((obj) => DataRow(
+                    cells: propertyNames
+                        .map((propName) => DataCell(Text(obj[propName])))
+                        .toList()))
+                .toList()));
   }
 }
