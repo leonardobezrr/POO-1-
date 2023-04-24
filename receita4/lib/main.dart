@@ -34,7 +34,13 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(
             title: const Text("Dicas"),
           ),
-          body: DataBodyWidget(objects: dataObjects),
+          body: 
+          ListView(
+            shrinkWrap: true,
+            children: [
+              DataBodyWidget(objects: dataObjects),
+            ],
+          ),
           bottomNavigationBar: NewNavBar(),
         ));
   }
@@ -70,9 +76,7 @@ class DataBodyWidget extends StatelessWidget {
     var columnNames = ["Nome", "Estilo", "IBU"],
         propertyNames = ["name", "style", "ibu"];
 
-    return SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: DataTable(
+    return DataTable(
             columns: columnNames
                 .map((name) => DataColumn(
                         label: Expanded(
@@ -86,6 +90,6 @@ class DataBodyWidget extends StatelessWidget {
                     cells: propertyNames
                         .map((propName) => DataCell(Text(obj[propName])))
                         .toList()))
-                .toList()));
+                .toList());
   }
 }
