@@ -30,14 +30,13 @@ class MyCustomForm extends StatefulWidget {
   }
 }
 
-
 class MyCustomFormState extends State<MyCustomForm> {
-  
   final _formKey = GlobalKey<FormState>();
 
   String _name = '';
   String _email = '';
   String? _gender;
+  int? _age;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +47,7 @@ class MyCustomFormState extends State<MyCustomForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text("Dados"),
             TextFormField(
               decoration: const InputDecoration(
                 labelText: 'Nome',
@@ -62,7 +62,6 @@ class MyCustomFormState extends State<MyCustomForm> {
                 _name = value!;
               },
             ),
-            
             TextFormField(
               decoration: const InputDecoration(
                 labelText: 'Email',
@@ -80,25 +79,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 _email = value!;
               },
             ),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  
-                  if (_formKey.currentState!.validate()) {
-                    
-                    _formKey.currentState!.save();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processando dados...')),
-                    );
-                    print('Nome: $_name\nEmail: $_email');
-                  }
-                },
-                child: const Text('Enviar'),
-              ),
-            ),
-            
+            const Text("\nGênero"),
             RadioListTile(
               title: const Text('Masculino'),
               value: 'Masculino',
@@ -129,7 +110,41 @@ class MyCustomFormState extends State<MyCustomForm> {
                 });
               },
             ),
-
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Idade (>18)',
+              ),
+              keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Por favor, digite sua idade.';
+                }
+                final age = int.tryParse(value);
+                if (age == null || age < 18 || age > 130) {
+                  return 'Por favor, digite uma idade válida.';
+                }
+                return null;
+              },
+              onSaved: (value) {
+                _age = int.parse(value!);
+              },
+            ),
+            
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Processando dados...')),
+                    );
+                    print('Nome: $_name\nEmail: $_email');
+                  }
+                },
+                child: const Text('Enviar'),
+              ),
+            ),
           ],
         ),
       ),
