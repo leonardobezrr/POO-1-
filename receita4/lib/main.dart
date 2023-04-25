@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           ListView(
             shrinkWrap: true,
             children: [
-              MyTileWidget(objects: dataObjects),
+              MyTileWidget(objects: dataObjects, propertyNames: const ['Style', 'Ibu']),
             ],
           ),
           bottomNavigationBar: NewNavBar(),
@@ -69,9 +69,10 @@ class NewNavBar extends StatelessWidget {
 
 
 class MyTileWidget extends StatelessWidget {
-  final List<Map<String, String>> objects;
-  
-  const MyTileWidget({required this.objects});
+  List objects;
+  List propertyNames;
+
+  MyTileWidget({this.objects = const [], this.propertyNames = const []});
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +85,7 @@ class MyTileWidget extends StatelessWidget {
         return Card(
           child: ListTile(
             title: Text(obj['name']!),
-            subtitle: Text('${obj['style']} - ${obj['ibu']} IBU'),
+            subtitle: Text("${propertyNames[0]}: ${objects[index]["style"]}, Ibu: ${objects[index]["ibu"]}"),
           ),
         );
       },
