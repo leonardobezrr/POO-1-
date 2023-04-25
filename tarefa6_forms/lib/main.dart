@@ -37,6 +37,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   String _email = '';
   String? _gender;
   int? _age;
+  String? _favoriteColor;
 
   @override
   Widget build(BuildContext context) {
@@ -130,6 +131,41 @@ class MyCustomFormState extends State<MyCustomForm> {
               },
             ),
             
+            const Text("\nQual sua cor favorita?"),
+            CheckboxListTile(
+              title: const Text('Azul'),
+              value:  _favoriteColor == 'Azul',
+              onChanged: (newValue) {
+                setState(() {
+                  _favoriteColor = newValue as String ?;
+                });
+              },
+              controlAffinity: ListTileControlAffinity.leading,
+              contentPadding: const EdgeInsets.all(0),
+            ),
+            CheckboxListTile(
+              title: const Text('Verde'),
+              value: _favoriteColor == 'Verde',
+              onChanged: ( newValue) {
+                setState(() {
+                  _favoriteColor = newValue as String ?;
+                });
+              },
+              controlAffinity: ListTileControlAffinity.leading,
+              contentPadding: const EdgeInsets.all(0),
+            ),
+            CheckboxListTile(
+              title: const Text('Vermelho'),
+              value: _favoriteColor ==  'Vermelho',
+              onChanged: ( newValue) {
+                setState(() {
+                  _favoriteColor = newValue as String ?;
+                });
+              },
+              controlAffinity: ListTileControlAffinity.leading,
+              contentPadding: const EdgeInsets.all(0),
+            ),
+
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: ElevatedButton(
