@@ -33,7 +33,10 @@ class NewNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(onTap: buttonTapped, items: const [
+    return BottomNavigationBar(
+      onTap: buttonTapped, 
+      
+      items: const [
       BottomNavigationBarItem(
         label: "Cafés",
         icon: Icon(Icons.coffee_outlined),
