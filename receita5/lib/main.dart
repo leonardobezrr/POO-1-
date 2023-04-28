@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+
 var dataObjects = [];
 
 void main() {
@@ -35,7 +37,7 @@ class NewNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       onTap: buttonTapped, 
-      
+      currentIndex: 2,
       items: const [
       BottomNavigationBarItem(
         label: "Cafés",
