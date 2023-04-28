@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class NewNavBar extends StatelessWidget {
+class NewNavBar extends HookWidget {
   NewNavBar();
 
   void buttonTapped(int index) {
