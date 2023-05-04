@@ -11,7 +11,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print ("no build da classe ${this}");
+    print("no build da classe ${this}");
     return MaterialApp(
         theme: ThemeData(primarySwatch: Colors.deepPurple),
         debugShowCheckedModeBanner: false,
@@ -25,6 +25,20 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class state extends StatefulWidget {
+  const state({super.key});
+
+  @override
+  State<state> createState() => _state();
+}
+
+class _state extends State<state> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(color: const Color(0xFFFFE306));
+  }
+}
+
 class NewNavBar extends HookWidget {
   NewNavBar();
 
@@ -35,7 +49,7 @@ class NewNavBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var state = useState(0);
-    print ("no build da classe ${this}");
+    print("no build da classe ${this}");
     return BottomNavigationBar(
         onTap: (index) {
           state.value = index;
@@ -60,7 +74,7 @@ class DataTableWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print ("no build da classe ${this}");
+    print("no build da classe ${this}");
     var columnNames = ["Nome", "Estilo", "IBU"],
         propertyNames = ["name", "style", "ibu"];
     return DataTable(
