@@ -4,15 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 final ValueNotifier<List> tableStateNotifier = new ValueNotifier([]);
 void carregarCervejas() {
   tableStateNotifier.value = [
-    {"name": "La Fin Du Monde", 
-    "style": "Bock", 
-    "ibu": "65"},
-    {"name": "Sapporo Premiume", 
-    "style": "Sour Ale", 
-    "ibu": "54"},
-    {"name": "Duvel", 
-    "style": "Pilsner", 
-    "ibu": "82"}
+    {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+    {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+    {"name": "Duvel", "style": "Pilsner", "ibu": "82"}
   ];
 }
 
@@ -46,7 +40,11 @@ class MyApp extends StatelessWidget {
 }
 
 class NewNavBar extends HookWidget {
-  NewNavBar();
+  var itemSelectedCallback; //esse atributo será uma função
+
+  NewNavBar({this.itemSelectedCallback}) {
+    itemSelectedCallback ??= () {};
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +52,7 @@ class NewNavBar extends HookWidget {
     return BottomNavigationBar(
         onTap: (index) {
           state.value = index;
-          carregarCervejas();
+          itemSelectedCallback();   //carregarCervejas();
         },
         currentIndex: state.value,
         items: const [
