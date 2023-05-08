@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
                     propertyNames: ["name", "style", "ibu"],
                     columnNames: ["Nome", "Estilo", "IBU"]);
               }),
-          bottomNavigationBar: NewNavBar(),
+          bottomNavigationBar: NewNavBar(itemSelectedCallback: carregarCervejas,),
         ));
   }
 }
