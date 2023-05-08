@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-final ValueNotifier<List> tableStateNotifier = new ValueNotifier([]);
-void carregarCervejas() {
-  tableStateNotifier.value = [
-    {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-    {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-    {"name": "Duvel", "style": "Pilsner", "ibu": "82"}
-  ];
+class DataService{
+  final ValueNotifier<List> tableStateNotifier = new ValueNotifier([]);
+    void carregar(index){
+    if (index == 1) carregarCervejas();
+  }
+  void carregarCervejas(){
+    tableStateNotifier.value = [{
+            "name": "La Fin Du Monde",
+            "style": "Bock",
+            "ibu": "65"
+            },
+            {
+            "name": "Sapporo Premiume",
+            "style": "Sour Ale",
+            "ibu": "54"
+            },
+            {
+            "name": "Duvel", 
+            "style": "Pilsner", 
+            "ibu": "82"
+            }
+          ];
+    }
 }
+final dataService = DataService();
 
 //var dataObjects = [];
 void main() {
@@ -27,14 +44,14 @@ class MyApp extends StatelessWidget {
             title: const Text("Dicas"),
           ),
           body: ValueListenableBuilder(
-              valueListenable: tableStateNotifier,
+              valueListenable: dataService.tableStateNotifier,
               builder: (_, value, __) {
                 return DataTableWidget(
                     jsonObjects: value,
                     propertyNames: ["name", "style", "ibu"],
                     columnNames: ["Nome", "Estilo", "IBU"]);
               }),
-          bottomNavigationBar: NewNavBar(itemSelectedCallback: carregarCervejas,),
+          bottomNavigationBar: NewNavBar(itemSelectedCallback: dataService.carregar,),
         ));
   }
 }
@@ -43,7 +60,7 @@ class NewNavBar extends HookWidget {
   var itemSelectedCallback; //esse atributo será uma função
 
   NewNavBar({this.itemSelectedCallback}) {
-    itemSelectedCallback ??= () {};
+    itemSelectedCallback ??= (_) {};
   }
 
   @override
@@ -52,7 +69,7 @@ class NewNavBar extends HookWidget {
     return BottomNavigationBar(
         onTap: (index) {
           state.value = index;
-          itemSelectedCallback();   //carregarCervejas();
+          itemSelectedCallback(index);   //carregarCervejas();
         },
         currentIndex: state.value,
         items: const [
