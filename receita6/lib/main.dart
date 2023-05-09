@@ -8,8 +8,7 @@ class DataService {
       carregarCafes();
     else if (index == 1)
       carregarCervejas();
-    else if (index == 2) 
-      carregarNacoes();
+    else if (index == 2) carregarNacoes();
   }
 
   void carregarCervejas() {
@@ -58,11 +57,16 @@ class MyApp extends StatelessWidget {
           body: ValueListenableBuilder(
               valueListenable: dataService.tableStateNotifier,
               builder: (_, value, __) {
-                return DataTableWidget(
-                    jsonObjects: value,
-                    propertyNames: ["name", "style", "ibu"],
-                    columnNames: ["Nome", "Estilo", "IBU"]);
-              }),
+                return ListView(
+                  children: [
+                  DataTableWidget(
+                      jsonObjects: value,
+                      propertyNames: ["name", "style", "ibu"],
+                      columnNames: ["Nome", "Estilo", "IBU"])
+                  ]
+                );
+              }
+          ),
           bottomNavigationBar: NewNavBar(
             itemSelectedCallback: dataService.carregar,
           ),
