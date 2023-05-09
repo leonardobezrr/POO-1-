@@ -8,6 +8,7 @@ void main() {
       primarySwatch: Colors.orange,
       textTheme: const TextTheme(bodyMedium: TextStyle(color: Colors.black)),
       ),
+      
     home: Scaffold(
       appBar: AppBar(title: const Text("Receita de bolo")),
       body: Center(
