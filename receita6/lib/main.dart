@@ -1,30 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class DataService{
+class DataService {
   final ValueNotifier<List> tableStateNotifier = new ValueNotifier([]);
-    void carregar(index){
-    if (index == 1) carregarCervejas();
+  void carregar(index) {
+    if (index == 0)
+      carregarCafes();
+    else if (index == 1)
+      carregarCervejas();
+    else if (index == 2) 
+      carregarNacoes();
   }
-  void carregarCervejas(){
-    tableStateNotifier.value = [{
-            "name": "La Fin Du Monde",
-            "style": "Bock",
-            "ibu": "65"
-            },
-            {
-            "name": "Sapporo Premiume",
-            "style": "Sour Ale",
-            "ibu": "54"
-            },
-            {
-            "name": "Duvel", 
-            "style": "Pilsner", 
-            "ibu": "82"
-            }
-          ];
-    }
+
+  void carregarCervejas() {
+    tableStateNotifier.value = [
+      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+      {"name": "Duvel", "style": "Pilsner", "ibu": "82"}
+    ];
+  }
+
+  void carregarNacoes() {
+    tableStateNotifier.value = [
+      {"name": "Brasil", "style": "hehe", "ibu": "999"},
+      {"name": "USA", "style": "fuck bro", "ibu": "22"},
+      {"name": "Mexico", "style": "manito", "ibu": "13"},
+    ];
+  }
+
+  void carregarCafes() {
+    tableStateNotifier.value = [
+      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
+      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
+      {"name": "Café Preto", "style": "Acorda Defunto", "ibu": "100"}
+    ];
+  }
 }
+
 final dataService = DataService();
 
 //var dataObjects = [];
@@ -51,7 +63,9 @@ class MyApp extends StatelessWidget {
                     propertyNames: ["name", "style", "ibu"],
                     columnNames: ["Nome", "Estilo", "IBU"]);
               }),
-          bottomNavigationBar: NewNavBar(itemSelectedCallback: dataService.carregar,),
+          bottomNavigationBar: NewNavBar(
+            itemSelectedCallback: dataService.carregar,
+          ),
         ));
   }
 }
@@ -69,7 +83,7 @@ class NewNavBar extends HookWidget {
     return BottomNavigationBar(
         onTap: (index) {
           state.value = index;
-          itemSelectedCallback(index);   //carregarCervejas();
+          itemSelectedCallback(index); //carregarCervejas();
         },
         currentIndex: state.value,
         items: const [
