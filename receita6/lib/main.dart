@@ -3,6 +3,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class DataService {
   final ValueNotifier<List> tableStateNotifier = new ValueNotifier([]);
+
+  var keys = ["Key", "Key", "Key"];
+  var columns = ["Aperte", "Em Algum", "Botão"];
+
   void carregar(index) {
     var carregarList = [
       carregarCafes,
@@ -13,9 +17,25 @@ class DataService {
     carregarList[index]();
   }
 
+  void propCervejas() {
+    keys = ["name", "style", "ibu"];
+    columns = ["Nome", "Estilo", "IBU"];
+  }
+
+  void propCafes() {
+    keys = ["name", "marca", "regiao"];
+    columns = ["Nome", "Marca", "Região"];
+  }
+
+  void propNacoes() {
+    keys = ["name", "idioma", "pib"];
+    columns = ["Nome", "Idioma", "PIB"];
+  }
+
   void carregarCervejas() {
+    propCervejas();
+
     tableStateNotifier.value = [
-      
       {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
       {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
       {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
@@ -38,93 +58,92 @@ class DataService {
       {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
       {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
       {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-      {"name": "Duvel", "style": "Pilsner", "ibu": "82"}
-      
     ];
   }
 
   void carregarNacoes() {
+    propNacoes();
     tableStateNotifier.value = [
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Mexico", "style": "manito", "ibu": "13"},
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Brasil", "style": "hehe", "ibu": "999"},
-      {"name": "USA", "style": "fuck bro", "ibu": "22"},
-      {"name": "Mexico", "style": "manito", "ibu": "13"},
+      {"name": "Brasil", "idioma": "Português", "pib": "5"},
+      {"name": "USA", "idioma": "Inglês", "pib": "10"},
+      {"name": "Mexico", "idioma": "Mexicano", "pib": "2"},
+      {"name": "Brasil", "idioma": "Português", "pib": "5"},
+      {"name": "USA", "idioma": "Inglês", "pib": "10"},
+      {"name": "Mexico", "idioma": "Mexicano", "pib": "2"},
+      {"name": "Brasil", "idioma": "Português", "pib": "5"},
+      {"name": "USA", "idioma": "Inglês", "pib": "10"},
+      {"name": "Mexico", "idioma": "Mexicano", "pib": "2"},
+      {"name": "Brasil", "idioma": "Português", "pib": "5"},
+      {"name": "USA", "idioma": "Inglês", "pib": "10"},
+      {"name": "Mexico", "idioma": "Mexicano", "pib": "2"},{"name": "Brasil", "idioma": "Português", "pib": "5"},
+      {"name": "USA", "idioma": "Inglês", "pib": "10"},
+      {"name": "Mexico", "idioma": "Mexicano", "pib": "2"},
+      {"name": "Brasil", "idioma": "Português", "pib": "5"},
+      {"name": "USA", "idioma": "Inglês", "pib": "10"},
+      {"name": "Mexico", "idioma": "Mexicano", "pib": "2"},{"name": "Brasil", "idioma": "Português", "pib": "5"},
+      {"name": "USA", "idioma": "Inglês", "pib": "10"},
+      {"name": "Mexico", "idioma": "Mexicano", "pib": "2"},
+      {"name": "Brasil", "idioma": "Português", "pib": "5"},
+      {"name": "USA", "idioma": "Inglês", "pib": "10"},
+      {"name": "Mexico", "idioma": "Mexicano", "pib": "2"},{"name": "Brasil", "idioma": "Português", "pib": "5"},
+      {"name": "USA", "idioma": "Inglês", "pib": "10"},
+      {"name": "Mexico", "idioma": "Mexicano", "pib": "2"},
+      {"name": "Brasil", "idioma": "Português", "pib": "5"},
+      {"name": "USA", "idioma": "Inglês", "pib": "10"},
+      {"name": "Mexico", "idioma": "Mexicano", "pib": "2"},{"name": "Brasil", "idioma": "Português", "pib": "5"},
+      {"name": "USA", "idioma": "Inglês", "pib": "10"},
+      {"name": "Mexico", "idioma": "Mexicano", "pib": "2"},
+      {"name": "Brasil", "idioma": "Português", "pib": "5"},
+      {"name": "USA", "idioma": "Inglês", "pib": "10"},
+      {"name": "Mexico", "idioma": "Mexicano", "pib": "2"},{"name": "Brasil", "idioma": "Português", "pib": "5"},
+      {"name": "USA", "idioma": "Inglês", "pib": "10"},
+      {"name": "Mexico", "idioma": "Mexicano", "pib": "2"},
+      {"name": "Brasil", "idioma": "Português", "pib": "5"},
+      {"name": "USA", "idioma": "Inglês", "pib": "10"},
+      {"name": "Mexico", "idioma": "Mexicano", "pib": "2"},
     ];
   }
 
   void carregarCafes() {
+    propCafes();
+
     tableStateNotifier.value = [
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Capuchino", "style": "Amargo", "ibu": "22"},
-      {"name": "Café Três Corações", "style": "Adocicado", "ibu": "20"},
-      {"name": "Café Preto", "style": "Acorda Defunto", "ibu": "100"}
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Sul"},
+      {"name": "Café Três Corações", "marca": "Adocicado", "regiao": "Norte"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Nordeste"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Sul"},
+      {"name": "Café Três Corações", "marca": "Adocicado", "regiao": "Norte"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Nordeste"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Sul"},
+      {"name": "Café Três Corações", "marca": "Adocicado", "regiao": "Norte"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Nordeste"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Sul"},
+      {"name": "Café Três Corações", "marca": "Adocicado", "regiao": "Norte"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Nordeste"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Sul"},
+      {"name": "Café Três Corações", "marca": "Adocicado", "regiao": "Norte"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Nordeste"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Sul"},
+      {"name": "Café Três Corações", "marca": "Adocicado", "regiao": "Norte"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Nordeste"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Sul"},
+      {"name": "Café Três Corações", "marca": "Adocicado", "regiao": "Norte"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Nordeste"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Sul"},
+      {"name": "Café Três Corações", "marca": "Adocicado", "regiao": "Norte"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Nordeste"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Sul"},
+      {"name": "Café Três Corações", "marca": "Adocicado", "regiao": "Norte"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Nordeste"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Sul"},
+      {"name": "Café Três Corações", "marca": "Adocicado", "regiao": "Norte"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Nordeste"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Sul"},
+      {"name": "Café Três Corações", "marca": "Adocicado", "regiao": "Norte"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Nordeste"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Sul"},
+      {"name": "Café Três Corações", "marca": "Adocicado", "regiao": "Norte"},
+      {"name": "Capuchino", "marca": "Amargo", "regiao": "Nordeste"},
     ];
   }
 }
@@ -150,16 +169,13 @@ class MyApp extends StatelessWidget {
           body: ValueListenableBuilder(
               valueListenable: dataService.tableStateNotifier,
               builder: (_, value, __) {
-                return ListView(
-                  children: [
+                return ListView(children: [
                   DataTableWidget(
                       jsonObjects: value,
-                      propertyNames: ["name", "style", "ibu"],
-                      columnNames: ["Nome", "Estilo", "IBU"])
-                  ]
-                );
-              }
-          ),
+                      propertyNames: dataService.keys,
+                      columnNames: dataService.columns)
+                ]);
+              }),
           bottomNavigationBar: NewNavBar(
             itemSelectedCallback: dataService.carregar,
           ),
@@ -203,8 +219,8 @@ class DataTableWidget extends StatelessWidget {
 
   DataTableWidget(
       {this.jsonObjects = const [],
-      this.columnNames = const ["Nome", "Estilo", "IBU"],
-      this.propertyNames = const ["name", "style", "ibu"]});
+      this.columnNames = const ["Aperte", "Em Algum", "Botão"],
+      this.propertyNames = const ["Key", "Key", "Key"]});
 
   @override
   Widget build(BuildContext context) {
