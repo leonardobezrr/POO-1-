@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class DataService {
-  final ValueNotifier<List> tableStateNotifier = new ValueNotifier([]);
+  final ValueNotifier<List> tableStateNotifier = ValueNotifier([]);
 
   var keys = ["Key", "Key", "Key"];
   var columns = ["Aperte", "Em Algum", "Botão"];
@@ -17,7 +17,8 @@ class DataService {
     carregarList[index]();
   }
 
-  void propCervejas() {
+
+  void listCervejas() {
     keys = ["name", "style", "ibu"];
     columns = ["Nome", "Estilo", "IBU"];
   }
@@ -33,7 +34,7 @@ class DataService {
   }
 
   void carregarCervejas() {
-    propCervejas();
+    listCervejas();
 
     tableStateNotifier.value = [
       {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
