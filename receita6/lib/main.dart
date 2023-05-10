@@ -23,12 +23,13 @@ class DataService {
     columns = ["Nome", "Estilo", "IBU"];
   }
 
-  void propCafes() {
+
+  void listCafes() {
     keys = ["name", "marca", "regiao"];
     columns = ["Nome", "Marca", "Região"];
   }
 
-  void propNacoes() {
+  void listNacoes() {
     keys = ["name", "idioma", "pib"];
     columns = ["Nome", "Idioma", "PIB"];
   }
@@ -63,7 +64,7 @@ class DataService {
   }
 
   void carregarNacoes() {
-    propNacoes();
+    listNacoes();
     tableStateNotifier.value = [
       {"name": "Brasil", "idioma": "Português", "pib": "5"},
       {"name": "USA", "idioma": "Inglês", "pib": "10"},
@@ -106,7 +107,7 @@ class DataService {
   }
 
   void carregarCafes() {
-    propCafes();
+    listCafes();
 
     tableStateNotifier.value = [
       {"name": "Capuchino", "marca": "Amargo", "regiao": "Sul"},
