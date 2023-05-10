@@ -4,11 +4,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class DataService {
   final ValueNotifier<List> tableStateNotifier = new ValueNotifier([]);
   void carregar(index) {
-    if (index == 0)
-      carregarCafes();
-    else if (index == 1)
-      carregarCervejas();
-    else if (index == 2) carregarNacoes();
+    var carregarList = [
+      carregarCafes,
+      carregarCervejas,
+      carregarNacoes,
+    ];
+
+    carregarList[index]();
   }
 
   void carregarCervejas() {
