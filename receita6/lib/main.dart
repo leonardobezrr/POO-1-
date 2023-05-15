@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class DataService {
-  final ValueNotifier<List> tableStateNotifier = new ValueNotifier([]);
+  final ValueNotifier<List> tableStateNotifier = ValueNotifier([]);
 
   var keys = ["Key", "Key", "Key"];
   var columns = ["Aperte", "Em Algum", "Botão"];
@@ -17,23 +17,25 @@ class DataService {
     carregarList[index]();
   }
 
-  void propCervejas() {
+
+  void listCervejas() {
     keys = ["name", "style", "ibu"];
     columns = ["Nome", "Estilo", "IBU"];
   }
 
-  void propCafes() {
+
+  void listCafes() {
     keys = ["name", "marca", "regiao"];
     columns = ["Nome", "Marca", "Região"];
   }
 
-  void propNacoes() {
+  void listNacoes() {
     keys = ["name", "idioma", "pib"];
     columns = ["Nome", "Idioma", "PIB"];
   }
 
   void carregarCervejas() {
-    propCervejas();
+    listCervejas();
 
     tableStateNotifier.value = [
       {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
@@ -62,7 +64,7 @@ class DataService {
   }
 
   void carregarNacoes() {
-    propNacoes();
+    listNacoes();
     tableStateNotifier.value = [
       {"name": "Brasil", "idioma": "Português", "pib": "5"},
       {"name": "USA", "idioma": "Inglês", "pib": "10"},
@@ -105,7 +107,7 @@ class DataService {
   }
 
   void carregarCafes() {
-    propCafes();
+    listCafes();
 
     tableStateNotifier.value = [
       {"name": "Capuchino", "marca": "Amargo", "regiao": "Sul"},
