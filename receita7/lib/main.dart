@@ -10,21 +10,29 @@ class DataService{
 
   void carregarCervejas(){
 
-    tableStateNotifier.value = [{
-              "name": "La Fin Du Monde",
-              "style": "Bock",
-              "ibu": "65"
-            },
-            {
-              "name": "Sapporo Premiume",
-              "style": "Sour Ale",
-              "ibu": "54"
-            },
-            {
-              "name": "Duvel", 
-              "style": "Pilsner", 
-              "ibu": "82"
-            }
+    tableStateNotifier.value = [
+      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
           ];
     }
 }
@@ -48,13 +56,18 @@ class MyApp extends StatelessWidget {
         appBar: AppBar( 
           title: const Text("Dicas"),
         ),
-        body: ValueListenableBuilder(
+        body: 
+          ValueListenableBuilder(
           valueListenable: dataService.tableStateNotifier,
           builder:(_, value, __){
-            return DataTableWidget(
-              jsonObjects:value, 
-              propertyNames: const ["name","style","ibu"], 
-              columnNames: const ["Nome", "Estilo", "IBU"]
+            return ListView(
+              children:[
+                DataTableWidget(
+                jsonObjects:value, 
+                propertyNames: const ["name","style","ibu"], 
+                columnNames: const ["Nome", "Estilo", "IBU"]
+                )
+              ]
             );
           }
         ),
