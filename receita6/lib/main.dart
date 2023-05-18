@@ -231,7 +231,7 @@ class DataTableWidget extends StatelessWidget {
             .map((name) => DataColumn(
                 label: Expanded(
                     child: Text(name,
-                        style: TextStyle(fontStyle: FontStyle.italic)))))
+                        style: const TextStyle(fontStyle: FontStyle.italic)))))
             .toList(),
         rows: jsonObjects
             .map((obj) => DataRow(
