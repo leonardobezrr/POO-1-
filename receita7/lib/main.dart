@@ -12,7 +12,9 @@ class DataService {
 
     print('carregar #1 - antes de carregarCervejas');
 
-    if (index == 1) res = carregarCervejas();
+    if (index == 1)
+      res = carregarCervejas();
+    else if (index == 0) res = carregarCafes();
 
     print('carregar #2 - carregarCervejas retornou $res');
   }
@@ -28,6 +30,30 @@ class DataService {
         scheme: 'https',
         host: 'random-data-api.com',
         path: 'api/beer/random_beer',
+        queryParameters: {'size': '20'});
+
+    print('carregarCervejas #1 - antes do await');
+
+    var jsonString = await http.read(beersUri);
+
+    print('carregarCervejas #2 - depois do await');
+
+    var beersJson = jsonDecode(jsonString);
+
+    tableStateNotifier.value = beersJson;
+  }
+
+  void propCafe() {
+    chave = ["blend_name", "origin", "intensifier"];
+    coluna = ["Nome", "Origem", "Intensidade"];
+  }
+
+  Future<void> carregarCafes() async {
+    propCafe();
+    var beersUri = Uri(
+        scheme: 'https',
+        host: 'random-data-api.com',
+        path: 'api/coffee/random_coffee',
         queryParameters: {'size': '20'});
 
     print('carregarCervejas #1 - antes do await');
