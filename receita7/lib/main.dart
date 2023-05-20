@@ -5,7 +5,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class DataService {
   final ValueNotifier<List> tableStateNotifier = ValueNotifier([]);
-
+  var chave = ["name", "style", "ibu"];
+  var coluna = ["Nome", "Estilo", "IBU"];
   void carregar(index) {
     var res = null;
 
@@ -16,7 +17,13 @@ class DataService {
     print('carregar #2 - carregarCervejas retornou $res');
   }
 
+  void propCerveja() {
+    chave = ["name", "style", "ibu"];
+    coluna = ["Nome", "Estilo", "IBU"];
+  }
+
   Future<void> carregarCervejas() async {
+    propCerveja();
     var beersUri = Uri(
         scheme: 'https',
         host: 'random-data-api.com',
@@ -56,19 +63,12 @@ class MyApp extends StatelessWidget {
           body: ValueListenableBuilder(
               valueListenable: dataService.tableStateNotifier,
               builder: (_, value, __) {
-                return ListView(
-                  children: [
-                    DataTableWidget(
-
-                    jsonObjects:value, 
-
-                    propertyNames: ["name","style","ibu"], 
-
-                    columnNames: ["Nome", "Estilo", "IBU"]
-
-                  )
-                  ]
-                );
+                return ListView(children: [
+                  DataTableWidget(
+                      jsonObjects: value,
+                      propertyNames: dataService.chave,
+                      columnNames: dataService.coluna)
+                ]);
               }),
           bottomNavigationBar:
               NewNavBar(itemSelectedCallback: dataService.carregar),
