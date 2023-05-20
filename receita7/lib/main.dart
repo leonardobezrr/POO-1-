@@ -6,16 +6,27 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class DataService {
   final ValueNotifier<List> tableStateNotifier = ValueNotifier([]);
   var chave = ["name", "style", "ibu"];
-  var coluna = ["Nome", "Estilo", "IBU"];
+  var coluna = ["oi", "como", "vai"];
   void carregar(index) {
     var res = null;
 
     print('carregar #1 - antes de carregarCervejas');
-
-    if (index == 1)
+    if (index == 0)
+      res = carregarCafes();
+    else if (index == 1)
       res = carregarCervejas();
-    else if (index == 0) res = carregarCafes();
+    else if (index == 2) res = carregarNacoes();
+    /*
+    Solução interessante de um colega ricsjs
+    Deixei aqui para utilizar nas próximas
+      var funcoes = [
+      carregarCafe,
+      carregarCervejas,
+      carregarNacoes,
+    ];
 
+    funcoes[index]();
+    */
     print('carregar #2 - carregarCervejas retornou $res');
   }
 
@@ -54,6 +65,30 @@ class DataService {
         scheme: 'https',
         host: 'random-data-api.com',
         path: 'api/coffee/random_coffee',
+        queryParameters: {'size': '20'});
+
+    print('carregarCervejas #1 - antes do await');
+
+    var jsonString = await http.read(beersUri);
+
+    print('carregarCervejas #2 - depois do await');
+
+    var beersJson = jsonDecode(jsonString);
+
+    tableStateNotifier.value = beersJson;
+  }
+
+  void propNacoes() {
+    chave = ["nationality","language","capital"];
+    coluna = ["Nacionalidade","Idioma","Capital"];
+  }
+
+  Future<void> carregarNacoes() async {
+    propNacoes();
+    var beersUri = Uri(
+        scheme: 'https',
+        host: 'random-data-api.com',
+        path: 'api/nation/random_nation',
         queryParameters: {'size': '20'});
 
     print('carregarCervejas #1 - antes do await');
