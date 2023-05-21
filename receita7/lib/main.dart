@@ -8,26 +8,15 @@ class DataService {
   var chave = ["name", "style", "ibu"];
   var coluna = ["oi", "como", "vai"];
   void carregar(index) {
-    var res = null;
-
-    print('carregar #1 - antes de carregarCervejas');
-    if (index == 0)
-      res = carregarCafes();
-    else if (index == 1)
-      res = carregarCervejas();
-    else if (index == 2) res = carregarNacoes();
-    /*
-    Solução interessante de um colega ricsjs
-    Deixei aqui para utilizar nas próximas
-      var funcoes = [
-      carregarCafe,
-      carregarCervejas,
-      carregarNacoes,
-    ];
-
-    funcoes[index]();
-    */
-    print('carregar #2 - carregarCervejas retornou $res');
+    if (index == 0) {
+      carregarCafes('15');
+    } 
+    else if (index == 1){
+      carregarCervejas('15');
+    } 
+    else if (index == 2){ 
+      carregarNacoes('15');
+    }
   }
 
   void propCerveja() {
@@ -35,22 +24,16 @@ class DataService {
     coluna = ["Nome", "Estilo", "IBU"];
   }
 
-  Future<void> carregarCervejas() async {
+  Future<void> carregarCervejas(String size) async {
     propCerveja();
     var beersUri = Uri(
         scheme: 'https',
         host: 'random-data-api.com',
         path: 'api/beer/random_beer',
-        queryParameters: {'size': '20'});
-
-    print('carregarCervejas #1 - antes do await');
+        queryParameters: {'size': size.toString()});
 
     var jsonString = await http.read(beersUri);
-
-    print('carregarCervejas #2 - depois do await');
-
     var beersJson = jsonDecode(jsonString);
-
     tableStateNotifier.value = beersJson;
   }
 
@@ -59,44 +42,34 @@ class DataService {
     coluna = ["Nome", "Origem", "Intensidade"];
   }
 
-  Future<void> carregarCafes() async {
+  Future<void> carregarCafes(String size) async {
     propCafe();
     var beersUri = Uri(
         scheme: 'https',
         host: 'random-data-api.com',
         path: 'api/coffee/random_coffee',
-        queryParameters: {'size': '20'});
-
-    print('carregarCervejas #1 - antes do await');
+        queryParameters: {'size': size.toString()});
 
     var jsonString = await http.read(beersUri);
-
-    print('carregarCervejas #2 - depois do await');
-
     var beersJson = jsonDecode(jsonString);
 
     tableStateNotifier.value = beersJson;
   }
 
   void propNacoes() {
-    chave = ["nationality","language","capital"];
-    coluna = ["Nacionalidade","Idioma","Capital"];
+    chave = ["nationality", "language", "capital"];
+    coluna = ["Nacionalidade", "Idioma", "Capital"];
   }
 
-  Future<void> carregarNacoes() async {
+  Future<void> carregarNacoes(String size) async {
     propNacoes();
     var beersUri = Uri(
         scheme: 'https',
         host: 'random-data-api.com',
         path: 'api/nation/random_nation',
-        queryParameters: {'size': '20'});
-
-    print('carregarCervejas #1 - antes do await');
+        queryParameters: {'size': size.toString()});
 
     var jsonString = await http.read(beersUri);
-
-    print('carregarCervejas #2 - depois do await');
-
     var beersJson = jsonDecode(jsonString);
 
     tableStateNotifier.value = beersJson;
