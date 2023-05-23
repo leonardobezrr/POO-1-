@@ -3,9 +3,21 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class DataService{
-  final ValueNotifier<List> tableStateNotifier = new ValueNotifier([]);
+enum TableStatus{idle,loading,ready,error}
 
+class DataService{
+
+  
+
+  final ValueNotifier<Map<String,dynamic>> tableStateNotifier 
+
+    = ValueNotifier({
+
+      'status':TableStatus.idle,
+
+      'dataObjects':[]
+
+    });
   void carregar(index){
     final funcoes = [carregarCafes, carregarCervejas, carregarNacoes];
     funcoes[index]();
@@ -21,12 +33,8 @@ class DataService{
     return;
 
   }
-
-
-
-  Future<void> carregarCervejas() async{
-
-    var beersUri = Uri(
+    void carregarCervejas(){
+      var beersUri = Uri(
 
       scheme: 'https',
 
@@ -36,27 +44,19 @@ class DataService{
 
       queryParameters: {'size': '5'});
 
+      http.read(beersUri).then( 
+        (jsonString){
 
+        var beersJson = jsonDecode(jsonString);
 
-    var jsonString = await http.read(beersUri);
+        tableStateNotifier.value = beersJson;
 
-    var beersJson = jsonDecode(jsonString);
-
-
-
-    tableStateNotifier.value = beersJson;
-
+        }
+      );
   }
-
 }
 
-
-
 final dataService = DataService();
-
-
-
-
 
 void main() {
 
@@ -98,7 +98,7 @@ class MyApp extends StatelessWidget {
 
             return DataTableWidget(
 
-              jsonObjects:value, 
+              jsonObjects:value['dataObjects'], 
 
               propertyNames: ["name","style","ibu"], 
 
