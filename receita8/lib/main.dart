@@ -35,7 +35,9 @@ class DataService {
       var beersJson = jsonDecode(jsonString);
       tableStateNotifier.value = {
         'status': TableStatus.ready,
-        'dataObjects': beersJson
+        'dataObjects': beersJson,
+        'propertyNames': ["name", "style", "ibu"],
+        'columnsNames': ["Nome", "Estilo", "IBU"],
       };
     });
   }
@@ -63,23 +65,18 @@ class MyApp extends StatelessWidget {
               builder: (_, value, __) {
                 switch (value['status']) {
                   case TableStatus.idle:
-                    return Text("Toque em algum botão");
+                    return const Center(
+                      child: Text("Toque em algum botão",style: TextStyle(color: Colors.deepPurpleAccent,fontWeight: FontWeight.bold,fontSize: 30),),
+                    );
                   case TableStatus.loading:
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   case TableStatus.ready:
                     return ListView(
                       children: [
                         DataTableWidget(
                             jsonObjects: value['dataObjects'],
-                            columnNames: const [
-                              "name",
-                              "style",
-                              "ibu"
-                            ],
-                            propertyNames: const [
-                              "Nome",
-                              "Estilo",
-                            ])
+                            columnNames: value['columnsNames'],
+                            propertyNames: value['propertyNames'])
                       ],
                     );
                   case TableStatus.error:
@@ -123,8 +120,8 @@ class NewNavBar extends HookWidget {
 
 class DataTableWidget extends StatelessWidget {
   final List jsonObjects;
-  final List<String> columnNames;
-  final List<String> propertyNames;
+  final List<dynamic> columnNames;
+  final List<dynamic> propertyNames;
 
   DataTableWidget(
       {this.jsonObjects = const [],
