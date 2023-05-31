@@ -18,11 +18,37 @@ class DataService {
   }
 
   void carregarCafes() {
-    return;
+    var beersUri = Uri(
+        scheme: 'https',
+        host: 'random-data-api.com',
+        path: 'api/coffee/random_coffee',
+        queryParameters: {'size': '15'});
+    http.read(beersUri).then((jsonStrig) {
+      var beersJson = jsonDecode(jsonStrig);
+      tableStateNotifier.value = {
+        'status': TableStatus.ready,
+        'dataObjects': beersJson,
+        'propertyNames': ["blend_name", "origin", "intensifier"],
+        'columnsNames': ["Nome", "Origem", "Intensidade"],
+      };
+    });
   }
 
-  void carregarNacoes() {
-    return;
+  Future<void> carregarNacoes() async {
+    var beersUri = Uri(
+        scheme: 'https',
+        host: 'random-data-api.com',
+        path: 'api/nation/random_nation',
+        queryParameters: {'size': '15'});
+    var jsonString = await http.read(beersUri);
+    var beersJson = jsonDecode(jsonString);
+
+    tableStateNotifier.value = {
+      'status': TableStatus.ready,
+      'dataObjects': beersJson,
+      'propertyNames': ["nationality", "language", "capital"],
+      'columnsNames': ["Nacionalidade", "Idioma", "Capital"],
+    };
   }
 
   void carregarCervejas() {
@@ -66,10 +92,18 @@ class MyApp extends StatelessWidget {
                 switch (value['status']) {
                   case TableStatus.idle:
                     return const Center(
-                      child: Text("Toque em algum botão",style: TextStyle(color: Colors.deepPurpleAccent,fontWeight: FontWeight.bold,fontSize: 30),),
+                      child: Text(
+                        "Toque em algum botão",
+                        style: TextStyle(
+                            color: Colors.deepPurpleAccent,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30),
+                      ),
                     );
                   case TableStatus.loading:
-                    return const CircularProgressIndicator();
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   case TableStatus.ready:
                     return ListView(
                       children: [
