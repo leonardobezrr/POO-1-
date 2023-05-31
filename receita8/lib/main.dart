@@ -31,24 +31,36 @@ class DataService {
         'propertyNames': ["blend_name", "origin", "intensifier"],
         'columnsNames': ["Nome", "Origem", "Intensidade"],
       };
+    }).catchError((error) {
+      tableStateNotifier.value = {
+        'status': TableStatus.error,
+      };
+      print('Erro na busca da API: $error');
     });
   }
 
   Future<void> carregarNacoes() async {
-    var beersUri = Uri(
-        scheme: 'https',
-        host: 'random-data-api.com',
-        path: 'api/nation/random_nation',
-        queryParameters: {'size': '15'});
-    var jsonString = await http.read(beersUri);
-    var beersJson = jsonDecode(jsonString);
+    try {
+      var beersUri = Uri(
+          scheme: 'https',
+          host: 'random-data-api.com',
+          path: 'api/nation/random_nation',
+          queryParameters: {'size': '15'});
+      var jsonString = await http.read(beersUri);
+      var beersJson = jsonDecode(jsonString);
 
-    tableStateNotifier.value = {
-      'status': TableStatus.ready,
-      'dataObjects': beersJson,
-      'propertyNames': ["nationality", "language", "capital"],
-      'columnsNames': ["Nacionalidade", "Idioma", "Capital"],
-    };
+      tableStateNotifier.value = {
+        'status': TableStatus.ready,
+        'dataObjects': beersJson,
+        'propertyNames': ["nationality", "language", "capital"],
+        'columnsNames': ["Nacionalidade", "Idioma", "Capital"],
+      };
+    } catch (error) {
+      tableStateNotifier.value = {
+        'status': TableStatus.error,
+      };
+      print('Erro na busca da API: $error');
+    }
   }
 
   void carregarCervejas() {
@@ -65,7 +77,13 @@ class DataService {
         'propertyNames': ["name", "style", "ibu"],
         'columnsNames': ["Nome", "Estilo", "IBU"],
       };
-    });
+    }).catchError((error) {
+      tableStateNotifier.value = {
+        'status': TableStatus.error,
+      };
+      print('Erro na busca da API: $error');
+    }
+    );
   }
 }
 
@@ -114,7 +132,16 @@ class MyApp extends StatelessWidget {
                       ],
                     );
                   case TableStatus.error:
-                    return const Text("Reosse");
+                    return const Center(
+                      child: Text(
+                        "Reosse, deu erro !",
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
+                      ),
+                    );
                 }
                 return Text("...");
               }),
