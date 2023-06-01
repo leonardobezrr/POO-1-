@@ -9,7 +9,7 @@ class DataService {
   final ValueNotifier<Map<String, dynamic>> tableStateNotifier =
       ValueNotifier({'status': TableStatus.idle, 'dataObjects': []});
   void carregar(index) {
-    final funcoes = [carregarCafes, carregarCervejas, carregarNacoes];
+    final funcoes = [carregarCafes, carregarCervejas, carregarNacoes,carregarUsers];
     tableStateNotifier.value = {
       'status': TableStatus.loading,
       'dataObjects': []
@@ -76,6 +76,30 @@ class DataService {
         'dataObjects': beersJson,
         'propertyNames': ["name", "style", "ibu"],
         'columnsNames': ["Nome", "Estilo", "IBU"],
+      };
+    }).catchError((error) {
+      tableStateNotifier.value = {
+        'status': TableStatus.error,
+      };
+      print('Erro na busca da API: $error');
+    }
+    );
+  }
+
+  void carregarUsers() {
+    var beersUri = Uri(
+      //https://random-data-api.com/api/v2/users
+        scheme: 'https',
+        host: 'random-data-api.com',
+        path: 'api/v2/users',
+        queryParameters: {'size': '15'});
+    http.read(beersUri).then((jsonString) {
+      var beersJson = jsonDecode(jsonString);
+      tableStateNotifier.value = {
+        'status': TableStatus.ready,
+        'dataObjects': beersJson,
+        'propertyNames': ["id", "first_name", "last_name"],
+        'columnsNames': ["ID", "Nome", "Sobrenome"],
       };
     }).catchError((error) {
       tableStateNotifier.value = {
@@ -152,7 +176,7 @@ class MyApp extends StatelessWidget {
 }
 
 class NewNavBar extends HookWidget {
-  final _itemSelectedCallback;
+  var _itemSelectedCallback;
   NewNavBar({itemSelectedCallback})
       : _itemSelectedCallback = itemSelectedCallback ?? (int) {}
 
@@ -166,6 +190,10 @@ class NewNavBar extends HookWidget {
           _itemSelectedCallback(index);
         },
         currentIndex: state.value,
+        selectedItemColor:
+          Colors.deepPurple, 
+        unselectedItemColor: 
+          Colors.black38, 
         items: const [
           BottomNavigationBarItem(
             label: "Cafés",
@@ -174,7 +202,9 @@ class NewNavBar extends HookWidget {
           BottomNavigationBarItem(
               label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
           BottomNavigationBarItem(
-              label: "Nações", icon: Icon(Icons.flag_outlined))
+              label: "Nações", icon: Icon(Icons.flag_outlined)),
+          BottomNavigationBarItem(
+              label: "Users", icon: Icon(Icons.people))
         ]);
   }
 }
@@ -201,7 +231,7 @@ class DataTableWidget extends StatelessWidget {
         rows: jsonObjects
             .map((obj) => DataRow(
                 cells: propertyNames
-                    .map((propName) => DataCell(Text(obj[propName])))
+                    .map((propName) => DataCell(Text(obj[propName].toString())))
                     .toList()))
             .toList());
   }
