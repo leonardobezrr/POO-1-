@@ -4,10 +4,15 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 enum TableStatus { idle, loading, ready, error }
+enum ItemType{beer,coffee,nation,none}
 
 class DataService {
   final ValueNotifier<Map<String, dynamic>> tableStateNotifier =
-      ValueNotifier({'status': TableStatus.idle, 'dataObjects': []});
+      ValueNotifier({
+        'status': TableStatus.idle, 
+        'dataObjects': [],
+        'itemType':ItemType.none
+      });
 
   void carregar(index) {
     final funcoes = [carregarCafes, carregarCervejas, carregarNacoes];
@@ -28,6 +33,7 @@ class DataService {
     http.read(coffeesUri).then((jsonString) {
       var coffeesJson = jsonDecode(jsonString);
       tableStateNotifier.value = {
+        'itemType':ItemType.coffee,
         'status': TableStatus.ready,
         'dataObjects': coffeesJson,
         'propertyNames': ["blend_name", "origin", "variety"],
@@ -46,6 +52,7 @@ class DataService {
     http.read(nationsUri).then((jsonString) {
       var nationsJson = jsonDecode(jsonString);
       tableStateNotifier.value = {
+        'itemType':ItemType.nation,
         'status': TableStatus.ready,
         'dataObjects': nationsJson,
         'propertyNames': [
@@ -69,6 +76,7 @@ class DataService {
     http.read(beersUri).then((jsonString) {
       var beersJson = jsonDecode(jsonString);
       tableStateNotifier.value = {
+        'itemType':ItemType.beer,
         'status': TableStatus.ready,
         'dataObjects': beersJson,
         'propertyNames': ["name", "style", "ibu"],
