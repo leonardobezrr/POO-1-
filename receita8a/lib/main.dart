@@ -3,16 +3,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-enum TableStatus{idle,loading,ready,error}
+enum TableStatus { idle, loading, ready, error }
 
-class DataService{
-  final ValueNotifier<Map<String,dynamic>> tableStateNotifier 
-  = ValueNotifier({
-    'status':TableStatus.idle,
-    'dataObjects':[]
-  });
+class DataService {
+  final ValueNotifier<Map<String, dynamic>> tableStateNotifier =
+      ValueNotifier({'status': TableStatus.idle, 'dataObjects': []});
 
-  void carregar(index){
+  void carregar(index) {
     final funcoes = [carregarCafes, carregarCervejas, carregarNacoes];
     tableStateNotifier.value = {
       'status': TableStatus.loading,
@@ -21,55 +18,60 @@ class DataService{
     funcoes[index]();
   }
 
-  void carregarCafes(){
+  void carregarCafes() {
     var coffeesUri = Uri(
-      scheme: 'https',
-      host: 'random-data-api.com',
-      path: 'api/coffee/random_coffee',
-      queryParameters: {'size': '10'});
+        scheme: 'https',
+        host: 'random-data-api.com',
+        path: 'api/coffee/random_coffee',
+        queryParameters: {'size': '10'});
 
-    http.read(coffeesUri).then( (jsonString){
+    http.read(coffeesUri).then((jsonString) {
       var coffeesJson = jsonDecode(jsonString);
       tableStateNotifier.value = {
         'status': TableStatus.ready,
         'dataObjects': coffeesJson,
-        'propertyNames': ["blend_name","origin","variety"],
+        'propertyNames': ["blend_name", "origin", "variety"],
         'columnNames': ["Nome", "Origem", "Tipo"]
       };
     });
   }
 
-  void carregarNacoes(){
+  void carregarNacoes() {
     var nationsUri = Uri(
-      scheme: 'https',
-      host: 'random-data-api.com',
-      path: 'api/nation/random_nation',
-      queryParameters: {'size': '10'});
+        scheme: 'https',
+        host: 'random-data-api.com',
+        path: 'api/nation/random_nation',
+        queryParameters: {'size': '10'});
 
-    http.read(nationsUri).then( (jsonString){
+    http.read(nationsUri).then((jsonString) {
       var nationsJson = jsonDecode(jsonString);
       tableStateNotifier.value = {
         'status': TableStatus.ready,
         'dataObjects': nationsJson,
-        'propertyNames': ["nationality","capital","language","national_sport"],
-        'columnNames': ["Nome", "Capital", "Idioma","Esporte"]
+        'propertyNames': [
+          "nationality",
+          "capital",
+          "language",
+          "national_sport"
+        ],
+        'columnNames': ["Nome", "Capital", "Idioma", "Esporte"]
       };
     });
   }
 
-  void carregarCervejas(){
+  void carregarCervejas() {
     var beersUri = Uri(
-      scheme: 'https',
-      host: 'random-data-api.com',
-      path: 'api/beer/random_beer',
-      queryParameters: {'size': '10'});
+        scheme: 'https',
+        host: 'random-data-api.com',
+        path: 'api/beer/random_beer',
+        queryParameters: {'size': '10'});
 
-    http.read(beersUri).then( (jsonString){
+    http.read(beersUri).then((jsonString) {
       var beersJson = jsonDecode(jsonString);
       tableStateNotifier.value = {
         'status': TableStatus.ready,
         'dataObjects': beersJson,
-        'propertyNames': ["name","style","ibu"],
+        'propertyNames': ["name", "style", "ibu"],
         'columnNames': ["Nome", "Estilo", "IBU"]
       };
     });
@@ -84,104 +86,113 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
-      debugShowCheckedModeBanner:false,
-      home: Scaffold(
-        appBar: AppBar( 
-          title: const Text("Dicas"),
+        theme: ThemeData(primarySwatch: Colors.deepPurple),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text("Dicas"),
           ),
-        body: ValueListenableBuilder(
-          valueListenable: dataService.tableStateNotifier,
-          builder:(_, value, __){
-            switch (value['status']){
-              case TableStatus.idle: 
-                return const Center(child: Text("Toque algum botão, abaixo..."));
-              case TableStatus.loading:
-                return const Center(child: CircularProgressIndicator());
-              case TableStatus.ready: 
-                return ListWidget(
-                  jsonObjects: value['dataObjects'], 
-                  propertyNames: value['propertyNames']                 
-                );
-              case TableStatus.error: 
-                return const Text("Lascou");
-            }
-            return const Text("...");
-          }
-        ),
-        bottomNavigationBar: NewNavBar(itemSelectedCallback: dataService.carregar),
-      ));
+          body: ValueListenableBuilder(
+              valueListenable: dataService.tableStateNotifier,
+              builder: (_, value, __) {
+                switch (value['status']) {
+                  case TableStatus.idle:
+                    return const Center(
+                        child: Text("Toque algum botão, abaixo..."));
+                  case TableStatus.loading:
+                    return const Center(child: CircularProgressIndicator());
+                  case TableStatus.ready:
+                    return ListWidget(
+                        jsonObjects: value['dataObjects'],
+                        propertyNames: value['propertyNames']);
+                  case TableStatus.error:
+                    return const Text("Lascou");
+                }
+                return const Text("...");
+              }),
+          bottomNavigationBar:
+              NewNavBar(itemSelectedCallback: dataService.carregar),
+        ));
   }
 }
 
 class NewNavBar extends HookWidget {
   var _itemSelectedCallback;
-  NewNavBar({itemSelectedCallback}):
-    _itemSelectedCallback = itemSelectedCallback ?? (int){}
+  NewNavBar({itemSelectedCallback})
+      : _itemSelectedCallback = itemSelectedCallback ?? (int) {}
 
   @override
   Widget build(BuildContext context) {
     var state = useState(1);
     return BottomNavigationBar(
-      onTap: (index){
-        state.value = index;
-        _itemSelectedCallback(index);               
-      }, 
-      currentIndex: state.value,
-      items: const [
-        BottomNavigationBarItem(
-          label: "Cafés",
-          icon: Icon(Icons.coffee_outlined),
-        ),
-        BottomNavigationBarItem(
-            label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
-        BottomNavigationBarItem(
-          label: "Nações", icon: Icon(Icons.flag_outlined))
-      ]);
+        onTap: (index) {
+          state.value = index;
+          _itemSelectedCallback(index);
+        },
+        currentIndex: state.value,
+        items: const [
+          BottomNavigationBarItem(
+            label: "Cafés",
+            icon: Icon(Icons.coffee_outlined),
+          ),
+          BottomNavigationBarItem(
+              label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
+          BottomNavigationBarItem(
+              label: "Nações", icon: Icon(Icons.flag_outlined))
+        ]);
   }
 }
 
-class ListWidget extends StatelessWidget {
+class ListWidget extends HookWidget {
   final List jsonObjects;
   final List<String> propertyNames;
 
-  ListWidget( {this.jsonObjects = const [], this.propertyNames= const ["name", "style", "ibu"]});
+  ListWidget(
+      {this.jsonObjects = const [],
+      this.propertyNames = const ["name", "style", "ibu"]});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(    
+    var controller = useScrollController();
+    useEffect(() {
+      controller.addListener(() {
+        if (controller.position.pixels == controller.position.maxScrollExtent)
+          print('End of scroll');
+      });
+    }, [controller]);
+    return ListView.separated(
+      controller: controller,
       padding: const EdgeInsets.all(10),
-      separatorBuilder: (_,__) => Divider(
-            height: 5,
-            thickness: 2,
-            indent: 10,
-            endIndent: 10,
-            color: Theme.of(context).primaryColor,
-          ),
-      itemCount: jsonObjects.length,
-      itemBuilder: (_, index){
+      separatorBuilder: (_, __) => Divider(
+        height: 5,
+        thickness: 2,
+        indent: 10,
+        endIndent: 10,
+        color: Theme.of(context).primaryColor,
+      ),
+      itemCount: jsonObjects.length + 1,
+      itemBuilder: (_, index) {
+        if (index == jsonObjects.length) 
+          return LinearProgressIndicator();
+
         var title = jsonObjects[index][propertyNames[0]];
-        var content = propertyNames.sublist(1).map( (prop) => jsonObjects[index][prop] ).join(" - ");
-        return Card(     
-          shadowColor: Theme.of(context).primaryColor,     
-          child: Column( 
-            children: [
+        var content = propertyNames
+            .sublist(1)
+            .map((prop) => jsonObjects[index][prop])
+            .join(" - ");
+        return Card(
+            shadowColor: Theme.of(context).primaryColor,
+            child: Column(children: [
               SizedBox(height: 10),
               //a primeira propriedade vai em negrito
-              Text(                    
-                "${title}\n",
-                 style: TextStyle(fontWeight: FontWeight.bold)
-              ),
+              Text("${title}\n", style: TextStyle(fontWeight: FontWeight.bold)),
               //as demais vão normais
               Text(content),
               const SizedBox(height: 10)
-            ]
-          )
-        ); 
+            ]));
       },
     );
   }
