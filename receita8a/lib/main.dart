@@ -4,15 +4,15 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 enum TableStatus { idle, loading, ready, error }
-enum ItemType{beer,coffee,nation,none}
+
+enum ItemType { beer, coffee, nation, none }
 
 class DataService {
-  final ValueNotifier<Map<String, dynamic>> tableStateNotifier =
-      ValueNotifier({
-        'status': TableStatus.idle, 
-        'dataObjects': [],
-        'itemType':ItemType.none
-      });
+  final ValueNotifier<Map<String, dynamic>> tableStateNotifier = ValueNotifier({
+    'status': TableStatus.idle,
+    'dataObjects': [],
+    'itemType': ItemType.none
+  });
 
   void carregar(index) {
     final funcoes = [carregarCafes, carregarCervejas, carregarNacoes];
@@ -33,7 +33,7 @@ class DataService {
     http.read(coffeesUri).then((jsonString) {
       var coffeesJson = jsonDecode(jsonString);
       tableStateNotifier.value = {
-        'itemType':ItemType.coffee,
+        'itemType': ItemType.coffee,
         'status': TableStatus.ready,
         'dataObjects': coffeesJson,
         'propertyNames': ["blend_name", "origin", "variety"],
@@ -52,7 +52,7 @@ class DataService {
     http.read(nationsUri).then((jsonString) {
       var nationsJson = jsonDecode(jsonString);
       tableStateNotifier.value = {
-        'itemType':ItemType.nation,
+        'itemType': ItemType.nation,
         'status': TableStatus.ready,
         'dataObjects': nationsJson,
         'propertyNames': [
@@ -76,7 +76,7 @@ class DataService {
     http.read(beersUri).then((jsonString) {
       var beersJson = jsonDecode(jsonString);
       tableStateNotifier.value = {
-        'itemType':ItemType.beer,
+        'itemType': ItemType.beer,
         'status': TableStatus.ready,
         'dataObjects': beersJson,
         'propertyNames': ["name", "style", "ibu"],
@@ -94,6 +94,12 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  final functionsMap = {
+    ItemType.beer: dataService.carregarCervejas,
+    ItemType.coffee: dataService.carregarCafes,
+    ItemType.nation: dataService.carregarNacoes,
+  };
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -114,8 +120,10 @@ class MyApp extends StatelessWidget {
                     return const Center(child: CircularProgressIndicator());
                   case TableStatus.ready:
                     return ListWidget(
-                        jsonObjects: value['dataObjects'],
-                        propertyNames: value['propertyNames']);
+                      jsonObjects: value['dataObjects'],
+                      propertyNames: value['propertyNames'],
+                      scrollEndedCallback: functionsMap[value['itemType']],
+                    );
                   case TableStatus.error:
                     return const Text("Lascou");
                 }
@@ -173,7 +181,7 @@ class ListWidget extends HookWidget {
       controller.addListener(() {
         if (controller.position.pixels == controller.position.maxScrollExtent)
           print('End of scroll');
-        if (_scrollEndedCallback is Function){
+        if (_scrollEndedCallback is Function) {
           _scrollEndedCallback();
         }
       });
@@ -190,7 +198,7 @@ class ListWidget extends HookWidget {
       ),
       itemCount: jsonObjects.length + 1,
       itemBuilder: (_, index) {
-        if (index == jsonObjects.length) return LinearProgressIndicator();
+        if (index == jsonObjects.length) return Center(child: LinearProgressIndicator());
 
         var title = jsonObjects[index][propertyNames[0]];
         var content = propertyNames
