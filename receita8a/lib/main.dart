@@ -24,6 +24,17 @@ class DataService {
   }
 
   void carregarCafes() {
+    if (tableStateNotifier.value['status'] == TableStatus.loading) return;
+
+    if (tableStateNotifier.value['itemType'] != ItemType.coffee){
+        tableStateNotifier.value = {
+          'status': TableStatus.loading,
+          'dataObjects': [],
+          'itemType': ItemType.coffee
+        };
+      }
+
+
     var coffeesUri = Uri(
         scheme: 'https',
         host: 'random-data-api.com',
@@ -32,6 +43,14 @@ class DataService {
 
     http.read(coffeesUri).then((jsonString) {
       var coffeesJson = jsonDecode(jsonString);
+
+      if (tableStateNotifier.value['status'] == TableStatus.loading) {
+        coffeesJson = [
+          ...tableStateNotifier.value['dataObjects'],
+          ...coffeesJson
+        ];
+      }
+      
       tableStateNotifier.value = {
         'itemType': ItemType.coffee,
         'status': TableStatus.ready,
@@ -115,7 +134,11 @@ class MyApp extends StatelessWidget {
                 switch (value['status']) {
                   case TableStatus.idle:
                     return const Center(
-                        child: Text("Toque algum botão, abaixo..."));
+                        child: Text(
+                      "Toque algum botão, abaixo...",
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ));
                   case TableStatus.loading:
                     return const Center(child: CircularProgressIndicator());
                   case TableStatus.ready:
@@ -198,7 +221,8 @@ class ListWidget extends HookWidget {
       ),
       itemCount: jsonObjects.length + 1,
       itemBuilder: (_, index) {
-        if (index == jsonObjects.length) return Center(child: LinearProgressIndicator());
+        if (index == jsonObjects.length)
+          return Center(child: LinearProgressIndicator());
 
         var title = jsonObjects[index][propertyNames[0]];
         var content = propertyNames

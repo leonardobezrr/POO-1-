@@ -51,7 +51,7 @@ class NewNavBar extends StatelessWidget {
 
   void botaoFoiTocado(int index) {
     print("Tocaram no botão $index");
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {
