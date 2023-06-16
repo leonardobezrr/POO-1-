@@ -11,6 +11,19 @@ class MyApp extends StatelessWidget {
         home: Scaffold(
           appBar: AppBar(
             title: const Text("Dicas"),
+            actions: [
+              PopupMenuButton(
+                itemBuilder: (_) => [3, 7, 15]
+                    .map((num) => PopupMenuItem(
+                          value: num,
+                          child: Text("Carregar $num item por vez"),
+                        ))
+                    .toList(),
+                onSelected: (number) {
+                  dataService.numberOfItens = number;
+                },
+              )
+            ],
           ),
           body: ValueListenableBuilder(
               valueListenable: dataService.tableStateNotifier,
