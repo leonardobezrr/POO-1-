@@ -13,10 +13,10 @@ class MyApp extends StatelessWidget {
             title: const Text("Dicas"),
             actions: [
               PopupMenuButton(
-                itemBuilder: (_) => [3, 7, 15]
+                itemBuilder: (_) => [5, 12, 20]
                     .map((num) => PopupMenuItem(
                           value: num,
-                          child: Text("Carregar $num item por vez"),
+                          child: Text("Carregar $num itens por vez"),
                         ))
                     .toList(),
                 onSelected: (number) {

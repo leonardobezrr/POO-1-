@@ -7,10 +7,15 @@ enum TableStatus { idle, loading, ready, error }
 enum ItemType { beer, coffee, nation, none }
 
 class DataService {
-  int _numberOfItens = 10;
+  static const MAX_N_ITENS = 20;
+  static const MIN_N_ITENS = 5;
+  static const DEFAULT_N_ITENS = 12;
+  
+
+  int _numberOfItens = DEFAULT_N_ITENS;
 
   set numberOfItens(n) {
-    _numberOfItens = n;
+    _numberOfItens = n<= 0 ? MIN_N_ITENS :n > MAX_N_ITENS? MAX_N_ITENS : n;
   }
 
   final ValueNotifier<Map<String, dynamic>> tableStateNotifier = ValueNotifier({
