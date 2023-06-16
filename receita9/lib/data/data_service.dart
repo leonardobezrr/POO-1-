@@ -7,7 +7,11 @@ enum TableStatus { idle, loading, ready, error }
 enum ItemType { beer, coffee, nation, none }
 
 class DataService {
-  int numberOfItens = 10;
+  int _numberOfItens = 10;
+
+  set numberOfItens(n) {
+    _numberOfItens = n;
+  }
 
   final ValueNotifier<Map<String, dynamic>> tableStateNotifier = ValueNotifier({
     'status': TableStatus.idle,
@@ -35,7 +39,7 @@ class DataService {
         scheme: 'https',
         host: 'random-data-api.com',
         path: 'api/coffee/random_coffee',
-        queryParameters: {'size': '$numberOfItens'});
+        queryParameters: {'size': '$_numberOfItens'});
 
     http.read(coffeesUri).then((jsonString) {
       var coffeesJson = jsonDecode(jsonString);
@@ -73,7 +77,7 @@ class DataService {
         scheme: 'https',
         host: 'random-data-api.com',
         path: 'api/nation/random_nation',
-        queryParameters: {'size': '$numberOfItens'});
+        queryParameters: {'size': '$_numberOfItens'});
 
     http.read(nationsUri).then((jsonString) {
       var nationsJson = jsonDecode(jsonString);
@@ -120,7 +124,7 @@ class DataService {
         scheme: 'https',
         host: 'random-data-api.com',
         path: 'api/beer/random_beer',
-        queryParameters: {'size': '$numberOfItens'});
+        queryParameters: {'size': '$_numberOfItens'});
 
     http.read(beersUri).then((jsonString) {
       var beersJson = jsonDecode(jsonString);
