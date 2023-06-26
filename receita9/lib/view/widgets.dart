@@ -35,10 +35,16 @@ class MyApp extends StatelessWidget {
                     return Center(child: CircularProgressIndicator());
                   case TableStatus.ready:
                     return SingleChildScrollView(
-                        child: DataTableWidget(
+                        scrollDirection: Axis.horizontal,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: DataTableWidget(
                             jsonObjects: value['dataObjects'],
                             propertyNames: value['propertyNames'],
-                            columnNames: value['columnNames']));
+                            columnNames: value['columnNames']
+                          )
+                        ),
+                    );
                   case TableStatus.error:
                     return Text("Lascou");
                 }
