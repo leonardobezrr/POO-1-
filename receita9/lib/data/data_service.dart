@@ -1,24 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../util/ordenador.dart';
 
 enum TableStatus { idle, loading, ready, error }
 
-enum ItemType { beer, coffee, nation, none }
+enum ItemType {
+  beer,
+  coffee,
+  nation,
+  none;
+
+  String get asString => '$name';
+
+  List<String> get columns => this == coffee
+      ? ["Nome", "Origem", "Tipo"]
+      : this == beer
+          ? ["Nome", "Estilo", "IBU"]
+          : this == nation
+              ? ["Nome", "Capital", "Idioma", "Esporte"]
+              : [];
+
+  List<String> get properties => this == coffee
+      ? ["blend_name", "origin", "variety"]
+      : this == beer
+          ? ["name", "style", "ibu"]
+          : this == nation
+              ? ["nationality", "capital", "language", "national_sport"]
+              : [];
+}
 
 class DataService {
-  static const MAX_N_ITENS = 20;
-  static const MIN_N_ITENS = 5;
-  static const DEFAULT_N_ITENS = 12;
-  
+  static const MAX_N_ITEMS = 20;
+  static const MIN_N_ITEMS = 3;
+  static const DEFAULT_N_ITEMS = 12;
 
-  int _numberOfItens = DEFAULT_N_ITENS;
+  int _numberOfItems = DEFAULT_N_ITEMS;
 
-  set numberOfItens(n) {
-    _numberOfItens = n<= 0 ? MIN_N_ITENS :n > MAX_N_ITENS? MAX_N_ITENS : n;
+  set numberOfItems(n) {
+    _numberOfItems = n < 0
+        ? MIN_N_ITEMS
+        : n > MAX_N_ITEMS
+            ? MAX_N_ITEMS
+            : n;
   }
-
-  int get numberOfItems => numberOfItems;
 
   final ValueNotifier<Map<String, dynamic>> tableStateNotifier = ValueNotifier({
     'status': TableStatus.idle,
@@ -27,73 +52,97 @@ class DataService {
   });
 
   void carregar(index) {
-    final funcoes = [carregarCafes, carregarCervejas, carregarNacoes];
-    funcoes[index]();
+    final params = [ItemType.coffee, ItemType.beer, ItemType.nation];
+
+    carregarPorTipo(params[index]);
   }
 
-  void carregarItens(String path, ItemType itemType, List<String> propertyNames, List<String> columnNames) {
-    // Ignorar solicitação se uma requisição já estiver em curso
-    if (tableStateNotifier.value['status'] == TableStatus.loading) return;
+  void ordenarEstadoAtual(String propriedade) {
+    List objetos = tableStateNotifier.value['dataObjects'] ?? [];
 
-    // Emitir estado de loading se os itens em exibição não forem do tipo atual
-    if (tableStateNotifier.value['itemType'] != itemType) {
-      tableStateNotifier.value = {
-        'status': TableStatus.loading,
-        'dataObjects': [],
-        'itemType': itemType,
-      };
+    if (objetos == []) return;
+
+    Ordenador ord = Ordenador();
+
+    var objetosOrdenados = [];
+
+    final type = tableStateNotifier.value['itemType'];
+
+    if (type == ItemType.beer && propriedade == "name") {
+      objetosOrdenados = ord.ordenarCervejasPorNomeCrescente(objetos);
     }
 
-    var itemsUri = Uri(
-      scheme: 'https',
-      host: 'random-data-api.com',
-      path: path,
-      queryParameters: {'size': '$_numberOfItens'},
-    );
-
-    http.read(itemsUri).then((jsonString) {
-      var itemsJson = jsonDecode(jsonString);
-
-      // Se já houver itens do tipo atual no estado da tabela...
-      if (tableStateNotifier.value['status'] != TableStatus.loading) {
-        itemsJson = [...tableStateNotifier.value['dataObjects'], ...itemsJson];
-      }
-
-      tableStateNotifier.value = {
-        'itemType': itemType,
-        'status': TableStatus.ready,
-        'dataObjects': itemsJson,
-        'propertyNames': propertyNames,
-        'columnNames': columnNames,
-      };
-    });
+    emitirEstadoOrdenado(objetosOrdenados, propriedade);
   }
 
-  void carregarCafes() {
-    carregarItens(
-      'api/coffee/random_coffee',
-      ItemType.coffee,
-      ["blend_name", "origin", "variety"],
-      ["Nome", "Origem", "Tipo"],
-    );
+  Uri montarUri(ItemType type) {
+    return Uri(
+        scheme: 'https',
+        host: 'random-data-api.com',
+        path: 'api/${type.asString}/random_${type.asString}',
+        queryParameters: {'size': '$_numberOfItems'});
   }
 
-  void carregarNacoes() {
-    carregarItens(
-      'api/nation/random_nation',
-      ItemType.nation,
-      ["nationality", "capital", "language", "national_sport"],
-      ["Nome", "Capital", "Idioma", "Esporte"],
-    );
+  Future<List<dynamic>> acessarApi(Uri uri) async {
+    var jsonString = await http.read(uri);
+
+    var json = jsonDecode(jsonString);
+
+    json = [...tableStateNotifier.value['dataObjects'], ...json];
+
+    return json;
   }
 
-  void carregarCervejas() {
-    carregarItens(
-      'api/beer/random_beer',
-      ItemType.beer,
-      ["name", "style", "ibu"],
-      ["Nome", "Estilo", "IBU"],
-    );
+  void emitirEstadoOrdenado(List objetosOrdenados, String propriedade) {
+    var estado = tableStateNotifier.value;
+
+    estado['dataObjects'] = objetosOrdenados;
+
+    estado['sortCriteria'] = propriedade;
+
+    estado['ascending'] = true;
+
+    tableStateNotifier.value = estado;
+  }
+
+  void emitirEstadoCarregando(ItemType type) {
+    tableStateNotifier.value = {
+      'status': TableStatus.loading,
+      'dataObjects': [],
+      'itemType': type
+    };
+  }
+
+  void emitirEstadoPronto(ItemType type, var json) {
+    tableStateNotifier.value = {
+      'itemType': type,
+      'status': TableStatus.ready,
+      'dataObjects': json,
+      'propertyNames': type.properties,
+      'columnNames': type.columns
+    };
+  }
+
+  bool temRequisicaoEmCurso() =>
+      tableStateNotifier.value['status'] == TableStatus.loading;
+
+  bool mudouTipoDeItemRequisitado(ItemType type) =>
+      tableStateNotifier.value['itemType'] != type;
+
+  void carregarPorTipo(ItemType type) async {
+    //ignorar solicitação se uma requisição já estiver em curso
+
+    if (temRequisicaoEmCurso()) return;
+
+    if (mudouTipoDeItemRequisitado(type)) {
+      emitirEstadoCarregando(type);
+    }
+
+    var uri = montarUri(type);
+
+    var json = await acessarApi(uri);
+
+    emitirEstadoPronto(type, json);
   }
 }
 
