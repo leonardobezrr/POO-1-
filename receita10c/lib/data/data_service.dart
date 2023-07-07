@@ -147,6 +147,7 @@ class DataService {
 
 final dataService = DataService();
 
+//Feito com ajuda de Ricardo
 class DecididorJson extends Decididor {
   final String prop;
   final bool crescente;

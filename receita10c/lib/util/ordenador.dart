@@ -14,6 +14,7 @@ class Ordenador {
 
         var proximo = itemOrdenadas[i + 1];
 
+        //Feito com ajuda de Ricardo
         if (decididor.precisaTrocarAtualPeloProximo(atual, proximo)) {
           var aux = itemOrdenadas[i];
 
