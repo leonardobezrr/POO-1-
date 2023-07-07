@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../util/decididor.dart';
 import '../util/ordenador.dart';
+
+var valores = [5, 10, 20];
 
 enum TableStatus { idle, loading, ready, error }
 
@@ -31,9 +34,9 @@ enum ItemType {
 }
 
 class DataService {
-  static const MAX_N_ITEMS = 20;
-  static const MIN_N_ITEMS = 3;
-  static const DEFAULT_N_ITEMS = 12;
+  static int get MAX_N_ITEMS => valores[2];
+  static int get MIN_N_ITEMS => valores[0];
+  static int get DEFAULT_N_ITEMS => valores[1];
 
   int _numberOfItems = DEFAULT_N_ITEMS;
 
@@ -66,13 +69,7 @@ class DataService {
 
     var objetosOrdenados = [];
 
-    final type = tableStateNotifier.value['itemType'];
-
-    if (type == ItemType.beer && propriedade == "name") {
-      objetosOrdenados = ord.ordenarCervejasPorNomeCrescente(objetos);
-    } else if (type == ItemType.beer && propriedade == "style") {
-      objetosOrdenados = ord.ordenarCervejasPorEstiloCrescente(objetos);
-    }
+    objetosOrdenados = ord.ordenarItem(objetos, DecididorJson(propriedade));
 
     emitirEstadoOrdenado(objetosOrdenados, propriedade);
   }
@@ -97,6 +94,7 @@ class DataService {
 
   void emitirEstadoOrdenado(List objetosOrdenados, String propriedade) {
     var estado = Map<String, dynamic>.from(tableStateNotifier.value);
+
     estado['dataObjects'] = objetosOrdenados;
 
     estado['sortCriteria'] = propriedade;
@@ -141,10 +139,26 @@ class DataService {
 
     var uri = montarUri(type);
 
-    var json = await acessarApi(uri);
+    var json = await acessarApi(uri); //, type);
 
     emitirEstadoPronto(type, json);
   }
 }
 
 final dataService = DataService();
+
+class DecididorJson extends Decididor {
+  final String prop;
+  final bool crescente;
+  DecididorJson(this.prop, [this.crescente = true]);
+
+  @override
+  bool precisaTrocarAtualPeloProximo(atual, proximo) {
+    try {
+      final ordemCorreta = crescente ? [atual, proximo] : [proximo, atual];
+      return ordemCorreta[0][prop].compareTo(ordemCorreta[1][prop]) > 0;
+    } catch (error) {
+      return false;
+    }
+  }
+}
